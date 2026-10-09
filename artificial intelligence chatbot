@@ -1,0 +1,90 @@
+import javax.swing.*;
+import java.awt.*;
+import java.awt.event.*;
+
+public class AIChatbot extends JFrame implements ActionListener {
+
+    JTextArea chatArea;
+    JTextField inputField;
+    JButton sendButton;
+
+    AIChatbot() {
+        setTitle("AI Chatbot");
+        setSize(500, 500);
+        setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+        setLayout(new BorderLayout());
+
+        chatArea = new JTextArea();
+        chatArea.setEditable(false);
+        chatArea.setLineWrap(true);
+        chatArea.setWrapStyleWord(true);
+
+        JScrollPane scrollPane = new JScrollPane(chatArea);
+        add(scrollPane, BorderLayout.CENTER);
+
+        JPanel panel = new JPanel(new BorderLayout());
+
+        inputField = new JTextField();
+        sendButton = new JButton("Send");
+
+        panel.add(inputField, BorderLayout.CENTER);
+        panel.add(sendButton, BorderLayout.EAST);
+
+        add(panel, BorderLayout.SOUTH);
+
+        sendButton.addActionListener(this);
+        inputField.addActionListener(this);
+
+        chatArea.setText("Chatbot: Hello! Welcome to AI Chatbot.\n"
+                + "Chatbot: Ask me anything about greetings, Java, or studies.\n\n");
+
+        setLocationRelativeTo(null);
+        setVisible(true);
+    }
+
+    // Rule-based chatbot response
+    String getResponse(String message) {
+        message = message.toLowerCase().trim();
+
+        if (message.matches(".*\\b(hi|hello|hey)\\b.*")) {
+            return "Hello! How can I help you?";
+        } else if (message.contains("your name")) {
+            return "I am a simple Java AI chatbot.";
+        } else if (message.contains("how are you")) {
+            return "I am doing great! How can I assist you?";
+        } else if (message.contains("java")) {
+            return "Java is an object-oriented programming language.";
+        } else if (message.contains("nlp")) {
+            return "NLP helps computers understand human language.";
+        } else if (message.contains("study")) {
+            return "Make a timetable and revise important topics daily.";
+        } else if (message.contains("college")) {
+            return "College is a place to learn new skills and knowledge.";
+        } else if (message.matches(".*\\b(bye|goodbye)\\b.*")) {
+            return "Goodbye! Have a great day.";
+        } else if (message.contains("thank")) {
+            return "You're welcome!";
+        } else {
+            return "Sorry, I don't understand. Try asking about Java, NLP, or studies.";
+        }
+    }
+
+    @Override
+    public void actionPerformed(ActionEvent e) {
+        String message = inputField.getText().trim();
+
+        if (message.isEmpty()) {
+            return;
+        }
+
+        chatArea.append("You: " + message + "\n");
+        String response = getResponse(message);
+        chatArea.append("Chatbot: " + response + "\n\n");
+
+        inputField.setText("");
+    }
+
+    public static void main(String[] args) {
+        SwingUtilities.invokeLater(() -> new AIChatbot());
+    }
+}
